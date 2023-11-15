@@ -12,8 +12,6 @@ const refs = {
 
 getBreeds();
 
-refs.select.addEventListener('change', onChange);
-
 async function getBreeds() {
   try {
     refs.loader.classList.remove('isHidden');
@@ -29,9 +27,13 @@ async function getBreeds() {
     new SlimSelect({
       select: '#single',
       data,
+      settings: {
+        hideSelected: true,
+      },
     });
 
     refs.select.classList.remove('isHidden');
+    refs.select.addEventListener('change', onChange);
   } catch (error) {
     console.log('error', error);
     iziToast.show({
