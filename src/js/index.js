@@ -10,35 +10,39 @@ const refs = {
   loader: document.querySelector('.js-loader'),
 };
 
-try {
-  refs.loader.classList.remove('isHidden');
-  const breeds = await fetchBreeds();
-
-  const data = breeds.map(breed => {
-    return {
-      text: breed.name,
-      value: breed.id,
-    };
-  });
-
-  new SlimSelect({
-    select: '#single',
-    data,
-  });
-
-  refs.select.classList.remove('isHidden');
-} catch (error) {
-  console.log('error', error);
-  iziToast.show({
-    message: 'Oops! Something went wrong! Try reloading the page!',
-    color: 'red',
-    position: 'topRight',
-  });
-} finally {
-  refs.loader.classList.add('isHidden');
-}
+getBreeds();
 
 refs.select.addEventListener('change', onChange);
+
+async function getBreeds() {
+  try {
+    refs.loader.classList.remove('isHidden');
+    const breeds = await fetchBreeds();
+
+    const data = breeds.map(breed => {
+      return {
+        text: breed.name,
+        value: breed.id,
+      };
+    });
+
+    new SlimSelect({
+      select: '#single',
+      data,
+    });
+
+    refs.select.classList.remove('isHidden');
+  } catch (error) {
+    console.log('error', error);
+    iziToast.show({
+      message: 'Oops! Something went wrong! Try reloading the page!',
+      color: 'red',
+      position: 'topRight',
+    });
+  } finally {
+    refs.loader.classList.add('isHidden');
+  }
+}
 
 async function onChange(e) {
   const breedId = e.target.value;
